@@ -15,6 +15,10 @@ dojo.declare('info.mindtrove.KenBurns', [dijit._Widget, dijit._Templated], {
     fadeTime : 1,
     width : '100%',
     height : '100%',
+    loop : true,
+    randomZoomRange : [90, 120],
+    randomPanRange : [20, 80],
+    randomTimeRange : [3.0, 4.0],
     templateString: '<div style="position: relative; overflow: hidden;" class="mtKenBurns" dojoAttachPoint="containerNode"></div>',
     postMixInProperties: function() {
         this._loadTimer = null;
@@ -57,11 +61,43 @@ dojo.declare('info.mindtrove.KenBurns', [dijit._Widget, dijit._Templated], {
             this._iterate();
         }
     },
+    
+    onShow: function(index, src) {
+        // extension point
+    },
 
     _iterate: function() {
+        try {
+            this.onShow(this.index);
+        } catch(e) {
+            console.error(e.message);
+        }
         var image = this.images[this.index++];
-        var from = dojo.map(image.from.split(' '), parseFloat);
-        var to = dojo.map(image.to.split(' '), parseFloat);
+        var from, to, time;
+        if(image.from) {
+            from = dojo.map(image.from.split(' '), parseFloat);
+        } else {
+            var p = (this.randomPanRange[1] - this.randomPanRange[0]);
+            var z = (this.randomZoomRange[1] - this.randomZoomRange[0]);
+            from = [(Math.random() * p) + this.randomPanRange[0],
+                    (Math.random() * p) + this.randomPanRange[0],
+                    (Math.random() * z) + this.randomZoomRange[0]];
+        }
+        if(image.to) {
+            to = dojo.map(image.to.split(' '), parseFloat);
+        } else {
+            var p = (this.randomPanRange[1] - this.randomPanRange[0]);
+            var z = (this.randomZoomRange[1] - this.randomZoomRange[0]);
+            to = [(Math.random() * p) + this.randomPanRange[0],
+                  (Math.random() * p) + this.randomPanRange[0],
+                  (Math.random() * z) + this.randomZoomRange[0]];
+        }
+        if(image.time) {
+            time = image.time;
+        } else {
+            var t = (this.randomTimeRange[1] - this.randomTimeRange[0]);
+            time = (Math.random() * t) + this.randomTimeRange[0]; 
+        }
         
         // container width and height (fixed)
         var bw = this.containerNode.offsetWidth;
@@ -94,7 +130,7 @@ dojo.declare('info.mindtrove.KenBurns', [dijit._Widget, dijit._Templated], {
         var anims = [];
         // create movement animation
         var move = dojo.animateProperty({
-            duration : (image.time + this.fadeTime*2) * 1000,
+            duration : (time + this.fadeTime*2) * 1000,
             node : image.node,
             easing: dojo.fx.easing.linear,
             properties: {
@@ -124,10 +160,13 @@ dojo.declare('info.mindtrove.KenBurns', [dijit._Widget, dijit._Templated], {
         });
         anims.push(fadeIn);
         
-        // set a timer for when to transition to the next image
-        this._fadeTimer = setTimeout(dojo.hitch(this, '_iterate'), 
-            (this.fadeTime + image.time) * 1000);
-        
+        // set a timer for when to transition to the next image if there is
+        // a next image
+        if(this.loop || this.index < this.images.length) {
+            this._fadeTimer = setTimeout(dojo.hitch(this, '_iterate'), 
+                (this.fadeTime + time) * 1000);
+        }
+
         // combine fade out, fade in, and move animations
         var allAnims = dojo.fx.combine(anims);
         allAnims.play();
