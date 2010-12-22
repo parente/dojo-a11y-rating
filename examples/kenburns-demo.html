@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ken Burns Effect</title>
+	  <link rel="stylesheet" href="http://o.aolcdn.com/dojo/1.3/dojo/resources/dojo.css" />
+	  <style type="text/css"> 
+		  .mtKenBurns {
+		    margin: 20px;
+		    border: 1px solid black;
+		    width: 400px;
+		    height: 350px;
+		  }
+	  </style>
+	  <script type="text/javascript">
+        djConfig={
+          parseOnLoad: true,
+          isDebug: false,
+          baseUrl: "../../",
+          modulePaths: {'info.mindtrove': "mindtrove"}
+        };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+    <script type="text/javascript">
+    dojo.require('info.mindtrove.KenBurns');
+    function onReady() {
+        var images = [
+            {
+                src : 'http://upload.wikimedia.org/wikipedia/commons/1/19/Orange_flower_of_Georgia.jpg',
+                from : '100% 30% 120%',
+                to: '30% 100% 100%',
+                time : 3
+            },
+            {
+                src : 'http://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Cichorium_intybus-alvesgaspar1.jpg/758px-Cichorium_intybus-alvesgaspar1.jpg',
+                from : '100% 100% 100%',
+                to: '30% 30% 120%',
+                time : 3
+            },
+            {
+                src : 'http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Twin_lantana_camara_edit.jpg/800px-Twin_lantana_camara_edit.jpg',
+                from : '100% 60% 150%',
+                to: '0% 50% 60%',
+                time : 5
+            }
+        ];
+    
+        var player = new info.mindtrove.KenBurns({
+            images : images, 
+            time : 0.5
+        }, 'viewer1');
+        player.play();
+    }
+    
+    dojo.ready(onReady);
+		</script>
+  </head>
+  <body>
+    <div id="viewer1"></div>    
+  </body>
+</html>
