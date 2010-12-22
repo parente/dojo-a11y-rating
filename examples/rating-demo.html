@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Rating Widget Demo</title>
+	  <link rel="stylesheet" href="http://o.aolcdn.com/dojo/1.5/dojo/resources/dojo.css" />
+	  <style type="text/css">
+      body {
+          font-family: sans-serif;
+      }
+      .ratingOffIcon {
+          background-image: url('../images/gray-star.png');
+          background-repeat: no-repeat;
+          width: 32px;
+          height: 32px;
+      }
+      .ratingOnIcon {
+          background-image: url('../images/red-star.png');
+          background-repeat: no-repeat;
+          width: 32px;
+          height: 32px;          
+       }
+    </style>
+	  <script type="text/javascript">
+        djConfig={
+          parseOnLoad: true,
+          isDebug: false,
+          baseUrl: "../../",
+          modulePaths: {'info.mindtrove': "mindtrove"}
+        };
+    </script>
+    <script type="text/javascript" src="http://o.aolcdn.com/dojo/1.5/dojo/dojo.xd.js"></script>
+    <script type="text/javascript">
+      dojo.require("info.mindtrove.Rating");
+    </script>
+  </head>
+  <body>
+    <label>Rate this tutorial:
+      <span dojoType="info.mindtrove.Rating" maximumValue="5"></span>
+    </label>
+    <ul>
+      <li>Tab to focus on the widget</li>
+      <li>Up/right to increase</li>
+      <li>Down/left to decrease</li>
+      <li>Home to set minimum value</li>
+      <li>End to set maximum value</li>
+    </ul>
+  </body>  
+</html>

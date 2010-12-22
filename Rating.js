@@ -9,7 +9,7 @@ dojo.require('dijit._Widget');
 dojo.require('dijit._Templated');
 dojo.require('dojo.string');
 dojo.require('dojo.i18n');
-dojo.requireLocalization('mindtrove', 'rating');
+dojo.requireLocalization('info.mindtrove', 'rating');
 
 dojo.declare('info.mindtrove.Rating', [dijit._Widget, dijit._Templated], {
     // minimum rating value
@@ -28,7 +28,7 @@ dojo.declare('info.mindtrove.Rating', [dijit._Widget, dijit._Templated], {
      * Constructor. Gets the bundle of localized labels.
      */
     constructor: function() {
-        this.labels = dojo.i18n.getLocalization('mindtrove', 'rating');
+        this.labels = dojo.i18n.getLocalization('info.mindtrove', 'rating');
     },
 
     /**
