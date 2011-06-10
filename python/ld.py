@@ -13,6 +13,9 @@ class Cell(object):
             self.ops.extend(cell.ops)
         if op:
             self.ops.append(op)
+            
+    def __str__(self):
+        return str(self.size)
 
 def table(d, m, n):
     '''Print the edit table for debug.'''
@@ -58,36 +61,35 @@ def ld(s, t):
 
     for j in xrange(n):
         for i in xrange(m):
-            if s[i] == t[j]:
-                d[(i,j)] = d[(i-1, j-1)] # noop
-            else:
-                cell = d[(i-1, j)] # delete
-                ty = 'delete'
-                pos = j + 1
-                ch = None
-                if d[(i, j-1)].size < cell.size:
-                    cell = d[(i, j-1)] # insert
-                    ty = 'insert'
-                    pos = j
-                    ch = t[j]
-                if d[(i-1, j-1)].size < cell.size:
-                    cell = d[(i-1, j-1)] # update
-                    ty = 'update'
-                    pos = j
-                    ch = t[j]
-                d[(i,j)] = Cell(cell.size+1, cell, [ty, pos, ch])
+            cell = d[(i-1, j)] # delete
+            ty = 'delete'
+            pos = j + 1
+            ch = None
+            if d[(i, j-1)].size < cell.size:
+                cell = d[(i, j-1)] # insert
+                ty = 'insert'
+                pos = j
+                ch = t[j]
+            if d[(i-1, j-1)].size < cell.size:
+                cell = d[(i-1, j-1)] # update
+                ty = 'update'
+                pos = j
+                ch = t[j]
+            op = None if (s[i] == t[j] and ty == 'update') else [ty, pos, ch]
+            d[(i,j)] = Cell(cell.size+1, cell, op)
 
     # @debug: print the table
     #table(d, m, n)
     return d[(m-1,n-1)]
 
 if __name__ == '__main__':
-    # test case, alphabet 15 times
-    a = 'abcdefghijklmnopqrstuvwxyz'*15
+    # test case
+    a = 'aaa'
     # toss an edit somewhere in the middle
-    b = a[:100] + '12345' + a[107:] + '678'
+    b = 'a'
     # compute ld
     cell = ld(a, b)
+    
     # apply edits to a and make sure it now matches b
     permute(a, cell.ops, b)
 
