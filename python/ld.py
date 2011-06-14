@@ -1,3 +1,4 @@
+#!/usr/bin/python
 '''
 Toying with Levenshtein Distance. Quick and dirty impl.
 
@@ -27,7 +28,9 @@ def table(d, m, n):
 def permute(s, ops, t=None):
     '''Permute string s with ops and assert it matches t.'''
     for op in ops:
-        if op[0] == 'insert':
+        if op is None:
+            continue
+        elif op[0] == 'insert':
             s = s[:op[1]] + op[2] + s[op[1]:]
         elif op[0] == 'update':
             s = s[:op[1]] + op[2] + s[op[1]+1:]
@@ -76,17 +79,18 @@ def ld(s, t):
                 pos = j
                 ch = t[j]
             op = None if (s[i] == t[j] and ty == 'update') else [ty, pos, ch]
-            d[(i,j)] = Cell(cell.size+1, cell, op)
+            size = cell.size+1 if op is not None else cell.size
+            d[(i,j)] = Cell(size, cell, op)
 
     # @debug: print the table
-    #table(d, m, n)
+    # table(d, m, n)
     return d[(m-1,n-1)]
 
 if __name__ == '__main__':
     # test case
-    a = 'aaa'
+    a = 'aanb'
     # toss an edit somewhere in the middle
-    b = 'a'
+    b = 'anb'
     # compute ld
     cell = ld(a, b)
     
