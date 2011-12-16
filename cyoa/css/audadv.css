@@ -1,0 +1,15 @@
+.book-content {
+    margin: 0 auto;
+    width: 40em;
+}
+.book-content .cover {
+    text-align: center;
+}
+.book-content .choices {
+    text-align: left;
+    font-size: 0.9em;
+    margin-top: 4em;
+}
+.book-content .page-text {
+    line-height: 1.5em;
+}
